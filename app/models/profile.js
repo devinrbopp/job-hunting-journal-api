@@ -15,6 +15,11 @@ const profileSchema = new mongoose.Schema({
         minlength: 5,
         maxlength: 5
     },
+    owner: {
+        // this links the user Id
+        type: String,
+        required: true
+    },
     // not in use at this time
     interviewQuestions: {
         type: Object
