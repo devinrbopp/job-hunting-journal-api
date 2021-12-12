@@ -1,6 +1,5 @@
-// Express docs: http://expressjs.com/en/api.html
+// this boilerplate is pulled from example_routes.js
 const express = require('express')
-// Passport docs: http://www.passportjs.org/docs/
 const passport = require('passport')
 
 // pull profile database model
@@ -25,7 +24,7 @@ const requireToken = passport.authenticate('bearer', { session: false })
 const router = express.Router()
 
 
-// GET index route displays all profiles
+// GET - index route displays all profile document
 router.get('/profiles', (req, res, next) => {
     Profile.find()
         .then((profiles) => {
@@ -35,13 +34,34 @@ router.get('/profiles', (req, res, next) => {
         .catch(next)
 })
 
-// POST create a profile
+// POST - create a profile document
 router.post('/profiles', (req, res, next) => {
     Profile.create(req.body)
         .then(createdProfile => {
             res.status(201).json({ profile: createdProfile.toObject() })
         })
         .catch(next)
+})
+
+// ============================================================= //
+//  ROUTES BELOW NEED TO BE ADDED OR HAVE ONLY BEEN STUBBED OUT  //
+// ============================================================= //
+
+// GET - show a single profile document
+router.get('/profiles/:id', (req, res, next) => {
+    res.json({message: 'Show a single profile document'})
+})
+
+
+// PUT/PATCH - update a profile document
+// I don't know if this should be put or patch yet--if you figure it out go for it! - Devin
+router.patch('/profiles/:id', (req, res, next) => {
+    res.json({message: 'Update a profile document'})
+})
+
+// DELETE - show a single profile document
+router.delete('/profiles/:id', (req, res, next) => {
+    res.json({message: 'Delete a profile document'})
 })
 
 module.exports = router
