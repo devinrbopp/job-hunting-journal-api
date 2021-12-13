@@ -23,20 +23,54 @@ const requireToken = passport.authenticate('bearer', { session: false })
 // instantiate router
 const router = express.Router()
 
+// GET index all jobs
+// won't be called by the client, only for testing
+router.get('/jobs', (req, res, next) => {
+    Job.find()
+        .then(jobs => {
+            res.status(400).json(jobs)
+        })
+        .catch(next)
+})
+
+// GET show all jobs for currently logged in user
+router.get('/jobs/user', requireToken, (req, res, next) => {
+    Job.find({owner: req.user._id})
+        .then(jobs => {
+            res.status(400).json(jobs)
+        })
+        .catch(next)
+})
+
+// POST create a job
+router.post('/jobs', (req, res, next) => {
+    Job.create(req.body)
+        .then(createdJob => {
+            res.status(201).json(createdJob.toObject())
+        })
+        .catch(next)
+})
+
+// GET a single job
+router.get('/jobs/:jobId', requireToken, (req, res, next) => {
+    // needs to include requireOwnership(?)
+    Job.findOne({_id: req.params.jobId})
+        .then(handle404)
+        .then((job) => {
+            requireOwnership(req, job)
+            return job
+        })
+        .then(job => {
+            res.status(400).json(job)
+        })
+        .catch(next)
+})
+
 // ============================================= // 
 //  THESE ROUTES ARE STUBBED--NEED TO CALL DATA  //
 // ============================================= // 
 
-// GET index all jobs
-router.get('/jobs', (req, res, next) => {
-    res.json({message: 'Show all jobs'})
-})
 
-// GET show all jobs for a particular user
-
-// GET a single job
-
-// POST create a job
 
 // PUT/PATCH (?) a job
 
