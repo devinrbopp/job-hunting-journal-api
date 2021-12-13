@@ -80,14 +80,8 @@ router.patch('/jobs/:jobId', requireToken, (req, res, next) => {
         })
         .then(() => res.sendStatus(204))
         .catch(next)
-})
-// ============================================= // 
-//  THESE ROUTES ARE STUBBED--NEED TO CALL DATA  //
-// ============================================= // 
-
-
-
-
+    })
+    
 // DELETE a job
 
 router.delete('/jobs/:jobId', requireToken, (req, res, next) => {
@@ -103,5 +97,6 @@ router.delete('/jobs/:jobId', requireToken, (req, res, next) => {
         .then(() => res.sendStatus(204))
         .catch(next)
 })
+
 
 module.exports = router
