@@ -27,7 +27,23 @@ const router = express.Router()
 //  ROUTES WILL GO HERE  //
 // ===================== //
 
+// POST new task
+router.post('/tasks/:jobId', requireToken, (req, res, next) => {
+    Job.findById(req.params.jobId)
+        .then(handle404)
+        .then(job => {
+            requireOwnership(req, job)
+            return job
+        })
+        .then(job => {
+            job.tasks.push(req.body)
+            return job.save()
+        })
+        .then(job => {
+            res.status(201).json(job.toObject())
+        })
+        .catch(next)
+})
 // reference mongoose-relationships-server comment_routes.js for examples
-
 
 module.exports = router
