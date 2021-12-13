@@ -43,14 +43,19 @@ router.post('/profiles', (req, res, next) => {
         .catch(next)
 })
 
+// GET - show a single profile document
+router.get('/profiles/:id', (req, res, next) => {
+    //  res.json({message: 'Show a single profile document'})
+        Profile.findById(req.params.id)
+        .then(handle404)
+        .then(showProfile => res.status(200).json(showProfile))
+        .catch(next)
+    })
+    
 // ============================================================= //
 //  ROUTES BELOW NEED TO BE ADDED OR HAVE ONLY BEEN STUBBED OUT  //
 // ============================================================= //
 
-// GET - show a single profile document
-router.get('/profiles/:id', (req, res, next) => {
-    res.json({message: 'Show a single profile document'})
-})
 
 
 // PUT/PATCH - update a profile document
