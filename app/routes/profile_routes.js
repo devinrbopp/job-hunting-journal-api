@@ -69,16 +69,24 @@ router.patch('/profiles/:id', removeBlanks, (req, res, next) => {
        .catch(next)
    })
     
-// ============================================================= //
-//  ROUTES BELOW NEED TO BE ADDED OR HAVE ONLY BEEN STUBBED OUT  //
-// ============================================================= //
-
-
-
-
 // DELETE - show a single profile document
 router.delete('/profiles/:id', (req, res, next) => {
-    res.json({message: 'Delete a profile document'})
-})
+    // res.json({message: 'Delete a profile document'})
+        Profile.findById(req.params.id)
+        .then(handle404)
+        .then((profile) => {
+            //  lets add this later
+            // requireOwnership(req, example)
+            profile.deleteOne()
+        })
+        .then(()=> res.sendStatus(204))
+        .catch(next)
+    })
+
+
+
+
+
+
 
 module.exports = router
