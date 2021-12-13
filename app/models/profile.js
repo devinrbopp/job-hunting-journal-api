@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 
+const User = require('./user')
+
 const profileSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -17,8 +19,8 @@ const profileSchema = new mongoose.Schema({
     },
     owner: {
         // this links the user Id
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     },
     // not in use at this time
     interviewQuestions: {
