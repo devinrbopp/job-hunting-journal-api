@@ -51,6 +51,23 @@ router.get('/profiles/:id', (req, res, next) => {
         .then(showProfile => res.status(200).json(showProfile))
         .catch(next)
     })
+
+// PATCH - update a specific param in profile document
+router.patch('/profiles/:id', removeBlanks, (req, res, next) => {
+    // res.json({message: 'Update a profile document'})
+    //  ADD SOON
+      // delete req.body.profile.owner 
+      console.log(req.body)
+       Profile.findById(req.params.id)
+       .then(handle404)
+       .then((profile) => {
+           //  lets add this later
+           // requireOwnership(req, example)
+           return profile.updateOne(req.body)
+       })
+       .then(() => res.sendStatus(204))
+       .catch(next)
+   })
     
 // ============================================================= //
 //  ROUTES BELOW NEED TO BE ADDED OR HAVE ONLY BEEN STUBBED OUT  //
@@ -58,11 +75,6 @@ router.get('/profiles/:id', (req, res, next) => {
 
 
 
-// PUT/PATCH - update a profile document
-// I don't know if this should be put or patch yet--if you figure it out go for it! - Devin
-router.patch('/profiles/:id', (req, res, next) => {
-    res.json({message: 'Update a profile document'})
-})
 
 // DELETE - show a single profile document
 router.delete('/profiles/:id', (req, res, next) => {
