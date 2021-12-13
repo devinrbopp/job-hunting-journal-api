@@ -27,6 +27,23 @@ const router = express.Router()
 //  ROUTES WILL GO HERE  //
 // ===================== //
 
+// GET all tasks for current user
+router.get('/tasks', requireToken, (req, res, next) => {
+    Job.find({owner: req.user._id})
+        .then(jobs => {
+            let tasks = []
+            jobs.forEach(job => {
+                job.tasks.forEach(task => {
+                    tasks = [...tasks, task]
+                })
+            })
+            return tasks.map(task => task.toObject())
+        })
+        .then(tasks => {
+            res.status(200).json(tasks)
+        })
+})
+
 // POST new task
 router.post('/tasks/:jobId', requireToken, (req, res, next) => {
     Job.findById(req.params.jobId)
@@ -44,6 +61,19 @@ router.post('/tasks/:jobId', requireToken, (req, res, next) => {
         })
         .catch(next)
 })
-// reference mongoose-relationships-server comment_routes.js for examples
+
+// DELETE a task
+router.delete('/tasks/:jobId/:taskId', requireToken, (req, res, next) => {
+    Job.findById(req.params.jobId)
+        .then(handle404)
+        .then(job => {
+            job.tasks.pull(req.params.taskId)
+            return job.save()
+        })
+        .then(() => {
+            res.sendStatus(204)
+        })
+        .catch(next)
+})
 
 module.exports = router

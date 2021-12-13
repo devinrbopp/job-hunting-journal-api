@@ -1,4 +1,8 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose') 
+
+const taskSchema = require('./task')
+
+const User = require('./user')
 
 const jobSchema = new mongoose.Schema({
     jobTitle: {
@@ -15,9 +19,7 @@ const jobSchema = new mongoose.Schema({
         minlength: 5,
         maxlength: 5
     },
-    tasks: {
-        type: Array
-    },
+    tasks: [taskSchema],
     applied: {
         type: Boolean,
         default: false
@@ -26,9 +28,8 @@ const jobSchema = new mongoose.Schema({
         type: String
     },
     owner: {
-        // user id
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 })
 

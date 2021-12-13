@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 
+const Job = require('./job')
+
 const taskSchema = new mongoose.Schema({
     taskName: {
         type: String,
