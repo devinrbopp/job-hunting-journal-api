@@ -56,7 +56,7 @@ router.get('/jobs/:jobId', requireToken, (req, res, next) => {
     // needs to include requireOwnership(?)
     Job.findOne({_id: req.params.jobId})
         .then(handle404)
-        .then((job) => {
+        .then(job => {
             requireOwnership(req, job)
             return job
         })
@@ -66,14 +66,37 @@ router.get('/jobs/:jobId', requireToken, (req, res, next) => {
         .catch(next)
 })
 
+// PATCH a job
+
+router.patch('/jobs/:jobId', requireToken, (req, res, next) => {
+    Job.findById(req.params.jobId)
+        .then(handle404)
+        .then(job => {
+            requireOwnership(req, job)
+            return job
+        })
+        .then(job => {
+            return job.updateOne(req.body)
+        })
+        .then(() => res.sendStatus(204))
+        .catch(next)
+})
 // ============================================= // 
 //  THESE ROUTES ARE STUBBED--NEED TO CALL DATA  //
 // ============================================= // 
 
 
 
-// PUT/PATCH (?) a job
 
 // DELETE a job
+
+router.delete('/jobs/:jobId', requireToken, (req, res, next) => {
+    Job.findById(req.params.jobId)
+        .then(handle404)
+        .then(job => {
+            requireOwnership(req, job)
+            return
+        })
+})
 
 module.exports = router
