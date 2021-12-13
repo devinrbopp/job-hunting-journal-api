@@ -35,7 +35,6 @@ router.get('/jobs', (req, res, next) => {
 
 // GET show all jobs for currently logged in user
 router.get('/jobs/user', requireToken, (req, res, next) => {
-    console.log(req.user)
     Job.find({owner: req.user._id})
         .then(jobs => {
             res.status(400).json(jobs)
@@ -52,13 +51,25 @@ router.post('/jobs', (req, res, next) => {
         .catch(next)
 })
 
+// GET a single job
+router.get('/jobs/:jobId', requireToken, (req, res, next) => {
+    // needs to include requireOwnership(?)
+    Job.findOne({_id: req.params.jobId})
+        .then(handle404)
+        .then((job) => {
+            requireOwnership(req, job)
+            return job
+        })
+        .then(job => {
+            res.status(400).json(job)
+        })
+        .catch(next)
+})
+
 // ============================================= // 
 //  THESE ROUTES ARE STUBBED--NEED TO CALL DATA  //
 // ============================================= // 
 
-
-
-// GET a single job
 
 
 // PUT/PATCH (?) a job
