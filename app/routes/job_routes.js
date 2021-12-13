@@ -95,8 +95,13 @@ router.delete('/jobs/:jobId', requireToken, (req, res, next) => {
         .then(handle404)
         .then(job => {
             requireOwnership(req, job)
-            return
+            return job
         })
+        .then(job => {
+            job.deleteOne()
+        })
+        .then(() => res.sendStatus(204))
+        .catch(next)
 })
 
 module.exports = router
