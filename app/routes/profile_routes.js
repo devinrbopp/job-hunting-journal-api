@@ -61,10 +61,10 @@ router.post('/profiles', (req, res, next) => {
 router.get('/profiles/:ownerId', (req,res,next) => {
     Profile.find({owner: req.params.ownerId})
         .then(handle404)
-        .then(showProfile => {
-            requireOwnership(req, showProfile)
-            return showProfile
-        })
+        // .then(showProfile => {
+        //     requireOwnership(req, showProfile)
+        //     return showProfile
+        // })
         .then(showProfile => res.status(200).json(showProfile))
         .catch(next)
 })
@@ -92,10 +92,10 @@ router.delete('/profiles/:id', (req, res, next) => {
     // res.json({message: 'Delete a profile document'})
     Profile.findById(req.params.id)
         .then(handle404)
-        .then(profile => {
-            requireOwnership(req, profile)
-            return profile
-        })
+        // .then(profile => {
+        //     requireOwnership(req, profile)
+        //     return profile
+        // })
         .then(profile => {
             profile.deleteOne()
         })
