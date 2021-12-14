@@ -28,7 +28,7 @@ const router = express.Router()
 router.get('/jobs', (req, res, next) => {
     Job.find()
         .then(jobs => {
-            res.status(400).json(jobs)
+            res.status(200).json(jobs)
         })
         .catch(next)
 })
@@ -37,7 +37,7 @@ router.get('/jobs', (req, res, next) => {
 router.get('/jobs/user', requireToken, (req, res, next) => {
     Job.find({owner: req.user._id})
         .then(jobs => {
-            res.status(400).json(jobs)
+            res.status(200).json(jobs)
         })
         .catch(next)
 })
