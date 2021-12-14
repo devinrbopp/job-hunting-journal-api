@@ -48,6 +48,10 @@ router.get('/profiles/:id', (req, res, next) => {
     //  res.json({message: 'Show a single profile document'})
     Profile.findById(req.params.id)
         .then(handle404)
+        .then(showProfile => {
+            requireOwnership(req, showProfile)
+            return showProfile 
+        })
         .then(showProfile => res.status(200).json(showProfile))
         .catch(next)
 })
@@ -60,9 +64,10 @@ router.patch('/profiles/:id', removeBlanks, (req, res, next) => {
     console.log(req.body)
     Profile.findById(req.params.id)
         .then(handle404)
-        .then((profile) => {
-            //  lets add this later
-            // requireOwnership(req, example)
+        .then(profile => {
+            requireOwnership(req, profile)
+        })
+        .then(profile => {
             return profile.updateOne(req.body)
         })
         .then(() => res.sendStatus(204))
@@ -74,9 +79,11 @@ router.delete('/profiles/:id', (req, res, next) => {
     // res.json({message: 'Delete a profile document'})
     Profile.findById(req.params.id)
         .then(handle404)
-        .then((profile) => {
-            //  lets add this later
-            // requireOwnership(req, example)
+        .then(profile => {
+            requireOwnership(req, profile)
+            return profile
+        })
+        .then(profile => {
             profile.deleteOne()
         })
         .then(() => res.sendStatus(204))
