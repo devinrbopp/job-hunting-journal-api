@@ -70,7 +70,7 @@ router.get('/profiles/:ownerId', (req,res,next) => {
 })
 
 // PATCH - update a specific param in profile document
-router.patch('/profiles/:id', removeBlanks, (req, res, next) => {
+router.patch('/profiles/:id', removeBlanks, requireToken, (req, res, next) => {
     // res.json({message: 'Update a profile document'})
     //  ADD SOON
     // delete req.body.profile.owner 
@@ -79,8 +79,6 @@ router.patch('/profiles/:id', removeBlanks, (req, res, next) => {
         .then(handle404)
         .then(profile => {
             requireOwnership(req, profile)
-        })
-        .then(profile => {
             return profile.updateOne(req.body)
         })
         .then(() => res.sendStatus(204))
