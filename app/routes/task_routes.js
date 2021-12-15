@@ -45,7 +45,7 @@ router.get('/tasks', requireToken, (req, res, next) => {
 })
 
 // POST new task
-router.post('/tasks/:jobId', requireToken, (req, res, next) => {
+router.post('/tasks/:jobId', requireToken, removeBlanks, (req, res, next) => {
     Job.findById(req.params.jobId)
         .then(handle404)
         .then(job => {
