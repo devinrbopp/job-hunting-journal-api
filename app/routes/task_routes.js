@@ -61,6 +61,40 @@ router.post('/tasks/:jobId', requireToken, removeBlanks, (req, res, next) => {
         })
         .catch(next)
 })
+//  Patch a task
+/* router.patch('/tasks/:jobId/:taskId', requireToken, removeBlanks, (req, res, next) => {
+    Job.findById(req.params.jobId)
+        .then(handle404)
+        .then(job => {
+            requireOwnership(req, job)
+            return job
+        })
+        .then(job => {
+            return job.tasks.findById(req.params.taskId)
+        })
+        .then(task =>{
+            task.updateOne(req.body)
+        })
+        .then(() => res.sendStatus(204))
+        .catch(next)
+    }) */
+
+    //  Patch a task
+router.patch('/tasks/:jobId/:taskId', requireToken, removeBlanks, (req, res, next) => {
+    Job.findById(req.params.jobId)
+        .then(handle404)
+        .then(job => {
+            requireOwnership(req, job)
+            return job
+        })
+        .then(job => {
+            const task = job.tasks.id(req.params.taskId)
+            task.set(req.body)
+            return job.save()
+        })
+        .then(() => res.sendStatus(204))
+        .catch(next)
+})
 
 // DELETE a task
 router.delete('/tasks/:jobId/:taskId', requireToken, (req, res, next) => {
