@@ -42,94 +42,40 @@ router.get('/tasks', requireToken, (req, res, next) => {
 router.post('/tasks', requireToken, (req,res,next) => {
     Task.create(req.body)
         .then(createdTask => {
-            res.status(201).json(createdTask.toObject())
+            res.status(201).json({ task: createdTask.toObject() })
         })
         .catch(next)
 })
 
-// get all tasks for a specific job
+router.patch('/tasks/:taskId', requireToken, removeBlanks, (req, res, next) => {
+    Task.findById(req.params.taskId)
+        .then(handle404)
+        .then(task => {
+            requireOwnership(req, task)
+            return task
+        })
+        .then(task => {
+            task.set(req.body)
+            return task.save()
+        })
+        .then(() => res.sendStatus(204))
+        .catch(next)
+})
 
-// GET all tasks for current user
-// router.get('/tasks', requireToken, (req, res, next) => {
-//     Job.find({owner: req.user._id})
-//         .then(jobs => {
-//             let tasks = []
-//             jobs.forEach(job => {
-//                 job.tasks.forEach(task => {
-//                     tasks = [...tasks, task]
-//                 })
-//             })
-//             return tasks.map(task => task.toObject())
-//         })
-//         .then(tasks => {
-//             res.status(200).json(tasks)
-//         })
-// })
-
-// // POST new task
-// router.post('/tasks/:jobId', requireToken, removeBlanks, (req, res, next) => {
-//     Job.findById(req.params.jobId)
-//         .then(handle404)
-//         .then(job => {
-//             requireOwnership(req, job)
-//             return job
-//         })
-//         .then(job => {
-//             job.tasks.push(req.body)
-//             return job.save()
-//         })
-//         .then(job => {
-//             res.status(201).json(job.toObject())
-//         })
-//         .catch(next)
-// })
-// //  Patch a task
-// /* router.patch('/tasks/:jobId/:taskId', requireToken, removeBlanks, (req, res, next) => {
-//     Job.findById(req.params.jobId)
-//         .then(handle404)
-//         .then(job => {
-//             requireOwnership(req, job)
-//             return job
-//         })
-//         .then(job => {
-//             return job.tasks.findById(req.params.taskId)
-//         })
-//         .then(task =>{
-//             task.updateOne(req.body)
-//         })
-//         .then(() => res.sendStatus(204))
-//         .catch(next)
-//     }) */
-
-//     //  Patch a task
-// router.patch('/tasks/:jobId/:taskId', requireToken, removeBlanks, (req, res, next) => {
-//     Job.findById(req.params.jobId)
-//         .then(handle404)
-//         .then(job => {
-//             requireOwnership(req, job)
-//             return job
-//         })
-//         .then(job => {
-//             const task = job.tasks.id(req.params.taskId)
-//             task.set(req.body)
-//             return job.save()
-//         })
-//         .then(() => res.sendStatus(204))
-//         .catch(next)
-// })
-
-// // DELETE a task
-// router.delete('/tasks/:jobId/:taskId', requireToken, (req, res, next) => {
-//     Job.findById(req.params.jobId)
-//         .then(handle404)
-//         .then(job => {
-//             job.tasks.pull(req.params.taskId)
-//             return job.save()
-//         })
-//         .then(() => {
-//             res.sendStatus(204)
-//         })
-//         .catch(next)
-// })
+router.delete('/tasks/:taskId', requireToken, (req, res, next) => {
+    Task.findById(req.params.taskId)
+        .then(handle404)
+        .then(task => {
+            requireOwnership(req, task)
+            return task
+        })
+        .then(task => {
+            task.deleteOne()
+        })
+        .then(() => {
+            res.sendStatus(204)
+        })
+        .catch(next)
+})
 
 module.exports = router
