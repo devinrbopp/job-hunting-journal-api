@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const Job = require('./job')
+const User = require('./user')
 
 const taskSchema = new mongoose.Schema({
     taskName: {
@@ -19,8 +20,15 @@ const taskSchema = new mongoose.Schema({
     completed: {
         type: Boolean,
         default: false
+    },
+    jobId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Job'
+    },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 })
 
-// subdocuments do not a require a model! only a schema
-module.exports = taskSchema
+module.exports = mongoose.model('Task', taskSchema)
