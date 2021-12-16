@@ -19,7 +19,6 @@ const jobSchema = new mongoose.Schema({
         minlength: 5,
         maxlength: 5
     },
-    tasks: [taskSchema],
     applied: {
         type: Boolean,
         default: false
