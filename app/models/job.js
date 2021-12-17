@@ -15,9 +15,7 @@ const jobSchema = new mongoose.Schema({
     },
     zipCode: {
         // zips are strings to allow for leading zeroes and to control length
-        type: String,
-        minlength: 5,
-        maxlength: 5
+        type: String
     },
     applied: {
         type: Boolean,
