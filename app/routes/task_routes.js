@@ -31,7 +31,7 @@ const router = express.Router()
 // get all tasks for the current user
 router.get('/tasks', requireToken, (req, res, next) => {
     Task.find({owner: req.user._id})
-        .populate('jobId', ['company', 'jobTitle'])
+        // .populate('jobId', ['company', 'jobTitle'])
         .then(tasks => {
             res.status(200).json(tasks)
         })
@@ -62,6 +62,22 @@ router.patch('/tasks/:taskId', requireToken, removeBlanks, (req, res, next) => {
         .catch(next)
 })
 
+router.delete('/tasks/delete-all/:jobId', requireToken, (req, res, next) => {
+    Task.find({jobId:req.params.jobId})
+        .then(handle404)
+        .then(task => {
+            requireOwnership(req, task)
+            return task
+        })
+        .then(task => {
+            task.deleteMany()
+        })
+        .then(() => {
+            res.sendStatus(204)
+        })
+        .catch(next)
+})
+
 router.delete('/tasks/:taskId', requireToken, (req, res, next) => {
     Task.findById(req.params.taskId)
         .then(handle404)
@@ -77,5 +93,6 @@ router.delete('/tasks/:taskId', requireToken, (req, res, next) => {
         })
         .catch(next)
 })
+
 
 module.exports = router
