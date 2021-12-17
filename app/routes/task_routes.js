@@ -31,7 +31,7 @@ const router = express.Router()
 // get all tasks for the current user
 router.get('/tasks', requireToken, (req, res, next) => {
     Task.find({owner: req.user._id})
-        // .populate('jobId', ['company', 'jobTitle'])
+        .populate('jobId', ['company', 'jobTitle'])
         .then(tasks => {
             res.status(200).json(tasks)
         })
