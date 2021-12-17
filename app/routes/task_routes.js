@@ -63,14 +63,23 @@ router.patch('/tasks/:taskId', requireToken, removeBlanks, (req, res, next) => {
 })
 
 router.delete('/tasks/delete-all/:jobId', requireToken, (req, res, next) => {
+    // console.log('THIS IS JUST REQ.PARAMS',req.params)
+    // console.log('THIS IS REQ.PARAMS.JOBID',req.params.jobId)
+    // Task.remove({jobId:req.params.jobId})
     Task.find({jobId:req.params.jobId})
         .then(handle404)
-        .then(task => {
-            requireOwnership(req, task)
-            return task
+        .then(tasks => {
+            console.log('this is tasks before you require ownership:', tasks)
+            // requireOwnership(req, tasks)
+            return tasks
         })
-        .then(task => {
-            task.deleteMany()
+        .then(tasks => {
+            console.log('this is tasks before you remove them', tasks)
+            tasks.forEach( task => {
+                task.remove()
+            })
+            return 'deleted'
+            // tasks.deleteMany()
         })
         .then(() => {
             res.sendStatus(204)
