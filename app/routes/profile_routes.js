@@ -43,20 +43,6 @@ router.post('/profiles', (req, res, next) => {
         .catch(next)
 })
 
-// GET - show a single profile document
-// PROBABLY WON'T NEED THIS ONE
-// router.get('/profiles/:id', (req, res, next) => {
-//     //  res.json({message: 'Show a single profile document'})
-//     Profile.findById(req.params.id)
-//         .then(handle404)
-//         .then(showProfile => {
-//             requireOwnership(req, showProfile)
-//             return showProfile 
-//         })
-//         .then(showProfile => res.status(200).json(showProfile))
-//         .catch(next)
-// })
-
 // GET - show profile belonging to user
 router.get('/profiles/:ownerId', (req,res,next) => {
     Profile.find({owner: req.params.ownerId})
@@ -100,11 +86,4 @@ router.delete('/profiles/:id', (req, res, next) => {
         .then(() => res.sendStatus(204))
         .catch(next)
 })
-
-
-
-
-
-
-
 module.exports = router
