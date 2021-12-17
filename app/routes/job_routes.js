@@ -67,7 +67,6 @@ router.get('/jobs/:jobId', requireToken, (req, res, next) => {
 })
 
 // PATCH a job
-
 router.patch('/jobs/:jobId', requireToken, removeBlanks, (req, res, next) => {
     Job.findById(req.params.jobId)
         .then(handle404)
@@ -83,7 +82,6 @@ router.patch('/jobs/:jobId', requireToken, removeBlanks, (req, res, next) => {
     })
     
 // DELETE a job
-
 router.delete('/jobs/:jobId', requireToken, (req, res, next) => {
     Job.findById(req.params.jobId)
         .then(handle404)
@@ -97,6 +95,4 @@ router.delete('/jobs/:jobId', requireToken, (req, res, next) => {
         .then(() => res.sendStatus(204))
         .catch(next)
 })
-
-
 module.exports = router
