@@ -1,8 +1,7 @@
-# Job Hunter
-Job Hunter is an app designed to help recent tech grads organize their job search process. The app will have a page for the users profile, job listings, saved jobs, and details/task list. 
+# MinMax Job Hunter
+This repo is dedicated to the API that we built for MinMax Job Hunter. Learn even more about the app in its **[main repo here](https://github.com/devinrbopp/client-job-hunting-journal)**!
 
-
-A huge portion of this program was mob programmed. Our group first stubbed out all the routes before going more in depth with what we wanted them to do. 
+MinMax Job Hunter is an app designed to help recent tech grads organize their job search process. The app will have a page for the users profile, job listings, saved jobs, and details/task list. 
 
 ## Tech Stack
 This app was created with the MERN stack. MERN stands for MongoDB, Express, React, and Node. 
@@ -15,27 +14,13 @@ This app was created with the MERN stack. MERN stands for MongoDB, Express, Reac
 
 - Node is an asynchronus event-driven runtime environment. It allows us to run JavaScript on a server, tying the frontend and backend together. 
 
-## User Stories
-As a tech job hunter, I want to…
-- Save jobs that I am interested in
-- Track tasks and deadlines pertaining to individual job listings
-- Have a field to take general notes
-- Draft answers to frequently asked interview questions so I can prepare for interviews
-
-## Wireframes
-### Login
-![Login]()
-### History
-![Profile]()
-### Favorites
-![Job Listing]()
-### New Team
-![Saved Jobs]()
-### Champion Data Screen
-![Details/Task List]()
+## ERD
+![Database ERD](./minmax-erd.png)
+In planning our database, we originally had Tasks stored as subdocuments of Jobs. We refactored this in order to make tasks more usable, particularly when displaying them outside of a job details page. 
 
 ## Obstacles
 - Curly brackets
 - Differentiating between needing a subdocument as opposed to a full document
-- Adapting to workflow of a group git project
 - Ensuring that the proper data sets were deleted through our fetch requests
+
+MinMax Job Hunter was built by Jerry Yang, Shuzel Lide, Hannah Legros, and Devin Bopp.
